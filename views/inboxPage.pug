@@ -1,0 +1,12 @@
+extends layouts/main-layout.pug
+   
+block content
+    h1 Inbox
+    .resultsContainer
+
+block headerButton
+    a(href="/messages/new") Create new message  
+        i.far.fa-plus-square
+
+block scripts 
+    script(src="/js/inboxPage.js") 

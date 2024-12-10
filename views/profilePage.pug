@@ -11,7 +11,15 @@ block content
         - followerCount = profileUser.followers.length
         - followingCount = profileUser.following.length
         .profileHeaderConainer
-            .coverPhotoContainer
+            .coverPhotoSection
+                .coverPhotoContainer
+
+                    if profileUser.coverPhoto
+                        img(src=profileUser.coverPhoto, alt="Users Cover Photo")
+
+                    if profileUser._id == userLoggedIn._id
+                        button.coverPhotoButton(data-bs-toggle="modal", data-bs-target="#coverPhotoUploadModal")
+                            i.fa-solid.fa-camera
 
                 .userImageContainer
                     img(src=`${profileUser.profilePic}`, alt="User Profile Image")
@@ -46,6 +54,7 @@ block content
 
         +createReplyModal(userLoggedIn)
         +createImageUploadModal()
+        +coverPhotoUploadModal()
 
 block scripts 
     script(src="/js/profile.js") 

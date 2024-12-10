@@ -3,6 +3,11 @@
     --green2: #5CFF92;
     --black: #141414;
 }
+
+html, body {
+    height: 100%;
+    min-height: 100%;
+}
 h1 {
     color: #33FF77;
     text-align: center; 
@@ -70,8 +75,15 @@ nav a{
    text-decoration: none;
 }
 
+.wrapper {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
 .wrapper > .row {
     margin: 0;
+    height: 100%;
 }
 
 .mainSectionContainer{
@@ -279,7 +291,7 @@ nav a{
     font-size: 20px;
 }
 
-.profileHeaderConainer .coverPhotoContainer {
+.profileHeaderConainer .coverPhotoSection {
     height: 180px;
     background-color: #3d3d3d;
     position: relative;
@@ -398,7 +410,8 @@ nav a{
     color:#33FF77;
 }
 
-.profilePictureButton{
+.profilePictureButton,
+.coverPhotoButton{
     position: absolute;
     font-size: 50px;
     color: rgba(0,0,0,0.6);
@@ -408,17 +421,286 @@ nav a{
     display: none;
 }
 
-.userImageContainer:hover .profilePictureButton {
+.userImageContainer:hover .profilePictureButton,
+.coverPhotoSection:hover .coverPhotoButton {
     display: block;
 }
 
-#imagePreview {
+.coverPhotoContainer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+}
+
+.coverPhotoContainer img{
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+}
+
+#imagePreview,
+#coverPreview {
     display: block;
     width: 100%;
     max-width: 100%;
 }
 
+.searchBarContainer {
+    position: relative;
+    padding: 20px;
 
+}
+
+.searchBarContainer i{
+    position: absolute;
+    top: 30px;
+    left: 25px;
+    color: #33FF77;
+
+}
+
+.searchBarContainer #searchBox {
+    height: 36px;
+    width: 100%;
+    padding: 5px 15px 5px 40px;
+    font-size: 19px;
+    color: white;
+    border-radius: 10px;
+    background-color: #3d3d3d;
+    border: 1px solid #33FF77
+
+}
+
+.resultsContainer {
+    display: flex;
+    flex-direction: column;
+}
+
+.resultsContainer .user {
+    padding: 20px;
+    display: flex;
+    border-bottom: 1px solid #3d3d3d;
+}
+
+.user .userDetailsContainer {
+    flex: 1;
+    padding: 0 20px;
+}
+
+.titleContainer {
+    display: flex;
+    justify-content: flex-end;
+    padding: 20px;
+    font-size: 19px;
+}
+
+.chatPageContainer {
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+    flex: 1;
+}
+
+.chatTitleBar {
+    border-bottom: 1px solid #3d3d3d;
+    display: flex;
+    align-items: center;
+    min-height: 60px;
+    padding: 10px;
+}
+
+.chatTitleBar label {
+    color: white;
+    margin-right: 10px;
+}
+
+#userSearchTextbox {
+    flex: 1;
+    min-width: 350px;
+    color: white;
+    padding: 5px 5px 5px 5px;
+    border-radius: 10px;
+    background-color: #3d3d3d;
+    border: 1px solid #33FF77
+}
+
+#createChatButton {
+    border: none;
+    background-color: #33FF77;
+    color: black;
+    padding: 7px 20px;
+    margin: 10px 10px;
+    border-radius:40px;
+    display: inline-block;
+}
+
+#createChatButton:disabled {
+    background-color: #82f5a8;
+    opacity: 0.7;
+
+}
+
+.selectedUser {
+    font-weight: bold;
+    color:#33FF77;
+    padding: 5px;
+    margin: 5px 5px 0 0;
+    display: inline-block;
+}
+
+.resultListItem {
+    padding: 15px;
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid #3d3d3d;
+    
+}
+
+.resultListItem:hover {
+    background-color: #3d3d3d;
+}
+
+.resultDetailsContainer {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}
+
+.resultDetailsContainer .heading {
+    font-weight: bold;
+}
+
+.resultDetailsContainer .subtext {
+    color: white;
+    font-size: 14px;
+}
+
+.resultListItem img {
+    height: 100%;
+    width: 100%;
+    border-radius: 50%;
+
+}
+
+.resultImageContainer {
+    height: 40px;
+    width: 40px;
+    position: relative;
+    margin-right: 10px;
+    display: flex;
+    align-items: center;
+    padding: 5px;
+}
+
+.groupChatImage img {
+    height: 65%;
+    width: 65%;
+    position: absolute;
+    bottom: 0;
+    margin: 0;
+    border: 2px solid #33FF77;
+}
+
+.groupChatImage img:first-of-type {
+    top: 0;
+    right: 0;
+}
+
+.chatTitleBarContainer {
+    color: white;
+    border-bottom: 1px solid #3d3d3d;
+    display: flex;
+    align-items: center;
+    padding: 20px;
+}
+
+#chatName {
+    width: 100%;
+    border: 1px solid transparent;
+    padding: 0 5px;
+}
+
+#chatName:hover {
+    border: 1px solid #3d3d3d;
+}
+
+.chatContainer{
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow-y: hidden;
+    height: 100vh;
+}
+
+.chatMessages {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+    padding: 20px;
+}
+
+.chatContainer .footer {
+    display: flex;
+    padding: 20px;
+    flex-shrink: 0px;
+}
+
+.chatContainer .footer textarea {
+    flex: 1;
+    resize: none;
+    background-color: #3d3d3d;
+    border: 1px solid #33FF77;
+    border-radius: 18px;
+    padding: 8px 12px;
+    height: 38px;
+    color: white;
+}
+
+.chatContainer .footer button {
+    background-color: transparent;
+    color: #33FF77;
+    font-size: 24px;
+    border-color: transparent;
+}
+
+.chatContainer .footer button:hover {
+    color: #22ab50;
+    transition: 0.2s;
+}
+
+.chatImagesContainer {
+    display: flex;
+    flex-direction: row-reverse;
+    height: 100%;
+    margin-right: 10px;
+}
+
+.chatImagesContainer img {
+    width: 40px;
+    height: 40px;
+    border: 2px solid #33FF77;
+    border-radius: 50%;
+    margin-left: -10px;
+}
+
+.chatImagesContainer .userCount {
+    height: 40px;
+    width: 40px;
+    background-color: white;
+    color: black;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid #141414;
+}
+
+.chatImagesContainer img:not(:last-child),
+.chatImagesContainer .userCount {
+    margin-left: -10px;
+}
 
 
 

@@ -1,5 +1,7 @@
 //Global vars
 var cropper;
+var timer;
+var selectedUsers = [];
 
 // Attach the function to a button click
 $("#displayAccessTokenButton").click(() => {
@@ -99,7 +101,32 @@ $("#filePhoto").change(function() {
             }
 
 
-            cropper = new Cropper(image)
+            cropper = new Cropper(image, {
+                aspectRatio: 1 / 1,
+                background: false
+            })
+
+        }
+        reader.readAsDataURL(this.files[0]);
+    }
+})
+
+$("#coverPhoto").change(function() {
+    if(this.files && this.files[0]) {
+        var reader = new FileReader();
+        reader.onload = (e) => {
+            var image = document.getElementById("coverPreview");
+            image.src = e.target.result
+
+            if(cropper !== undefined){
+                cropper.destroy();
+            }
+
+
+            cropper = new Cropper(image, {
+                aspectRatio: 16 / 9,
+                background: false
+            })
 
         }
         reader.readAsDataURL(this.files[0]);
@@ -128,6 +155,70 @@ $("#imageUploadButton").click(() => {
                 location.reload();
             }
         })
+    })
+})
+
+$("#coverPhotoUploadButton").click(() => {
+    var canvas = cropper.getCroppedCanvas();
+
+    if(canvas == null){
+        alert("Could not upload image")
+        return;
+    }
+
+    canvas.toBlob((blob) => {
+        var formData = new FormData();
+        formData.append("croppedImage", blob);
+
+        $.ajax({
+            url: "/api/users/coverPhoto",
+            type: "POST",
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: () => {
+                location.reload();
+            }
+        })
+    })
+})
+
+$("#userSearchTextbox").keydown((event) => {
+    clearTimeout(timer);
+
+    var textbox = $(event.target);
+    var value = textbox.val();
+    
+    if(value == "" && (event.which == 8 || event.keyCode == 8)){
+        selectedUsers.pop();
+        updateSelectedUsersHtml();
+        $(".resultsContainer").html("");
+
+        if(selectedUsers.length == 0){
+            $("#createChatButton").prop("disabled", true);
+        }
+        return;
+    }
+
+    timer = setTimeout(() => {
+        value = textbox.val().trim();
+
+        if(value == ""){
+            $(".resultsContainer").html("");
+        }else{
+            searchUsers(value);
+        }
+    }, 1000)
+})
+
+$("#createChatButton").click(() => {
+    var data = JSON.stringify(selectedUsers);
+
+    $.post("/api/chats", { users: data }, chat => {
+
+        if(!chat || !chat._id) return alert("invalid response");
+
+        window.location.href = `/messages/${chat._id}`
     })
 })
 
@@ -514,4 +605,92 @@ async function fetchAlbumCover(albumName) {
         console.error("Error fetching album cover:", error);
         return null;
     }
+}
+
+function outputUsers(results, container){
+    container.html("");
+
+    results.forEach(result => {
+        var html = createUserHtml(result, true);
+        container.append(html);
+    });
+
+    if(results.length == 0){
+        container.append("<span class='noResults'>No results found</span>");
+    }
+}
+
+function createUserHtml(userData, showfollowButton) {
+    var username = userData.username;
+    var isFollowing = userLoggedIn.following && userLoggedIn.following.includes(userData._id);
+    var text = isFollowing ? "Following" : "Follow"
+    var buttonClass = isFollowing ? "followButton following" : "followButton"
+
+    var followButton = "";
+
+    if(showfollowButton && userLoggedIn._id != userData._id){
+        followButton = `<div class = 'followButtonContainer'>
+                            <button class='${buttonClass}' data-user='${userData._id}'>${text}</button>
+                        </div>`
+                            
+    }
+
+    return `<div class='user'>
+                <div class='userImageContainer'>
+                    <img src='${userData.profilePic}'>
+                </div>
+                <div class='userDetailsContainer'>
+                    <div class='header'>
+                        <a href='/profile/${userData.username}'>${username}</a>
+                    </div>
+                </div>
+                ${followButton}
+            </div>`;
+}
+
+function searchUsers(searchTerm){
+    $.get("/api/users", { search: searchTerm }, results => {
+        outputSelectableUsers(results, $(".resultsContainer"));
+    })
+}
+
+function outputSelectableUsers(results, container){
+    container.html("");
+
+    results.forEach(result => {
+
+        if(result._id == userLoggedIn._id || selectedUsers.some(u => u._id == result._id)) {
+            return;
+        }
+        var html = createUserHtml(result, false);
+        var element = $(html);
+        element.click(() => userSelected(result))
+
+        container.append(element);
+    });
+
+    if(results.length == 0) {
+        container.append("<span class='noResults'>No results found</span>");
+    }
+}
+
+function userSelected(user){
+    selectedUsers.push(user);
+    updateSelectedUsersHtml()
+    $("#userSearchTextbox").val("").focus();
+    $(".resultsContainer").html("");
+    $("#createChatButton").prop("disabled", false);
+}
+
+function updateSelectedUsersHtml() {
+    var elements = [];
+
+    selectedUsers.forEach(user => {
+        var username = user.username;
+        var userElement = $(`<span class='selectedUser'>${username}</span>`);
+        elements.push(userElement);
+    })
+
+    $(".selectedUser").remove();
+    $("#selectedUsers").prepend(elements);
 }

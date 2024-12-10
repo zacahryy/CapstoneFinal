@@ -35,21 +35,27 @@ const authRoutes = require('./routes/authRoutes');
 const spotifyDashboardRoutes = require('./routes/spotifyDashboardRoutes');
 const profileRoutes = require('./routes/profileRoutes');
 const uploadRoutes = require('./routes/uploadRoutes');
+const searchRoutes = require('./routes/searchRoutes');
+const messagesRoutes = require('./routes/messagesRoutes');
 
 //API Routes
 const postApiRoutes = require('./routes/api/posts');
 const usersApiRoutes = require('./routes/api/users');
+const chatsApiRoutes = require('./routes/api/chats');
 
 app.use('/login', loginRoutes);
 app.use('/register', registerRoutes);
-app.use('/posts', postRoutes);
+app.use('/posts', middleware.requireLogin, postRoutes);
 app.use('/auth', authRoutes);
 app.use('/spotify-dashboard', spotifyDashboardRoutes);
-app.use('/profile', profileRoutes);
+app.use('/profile', middleware.requireLogin, profileRoutes);
 app.use('/uploads', uploadRoutes);
+app.use('/search', middleware.requireLogin, searchRoutes);
+app.use('/messages', middleware.requireLogin, messagesRoutes);
 
 app.use('/api/posts', middleware.requireLogin, postApiRoutes);
 app.use('/api/users', usersApiRoutes);
+app.use('/api/chats', chatsApiRoutes);
 app.use('/api/spotifySetup', (req, res, next) => {
     req.spotifyApi = spotifyApi; // Attach Spotify API to request
     next();

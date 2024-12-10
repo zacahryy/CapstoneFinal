@@ -17,6 +17,15 @@ router.get('/', async (req, res, next) => {
           delete searchObj.isReply;
      }
 
+     if(searchObj.search !== undefined) {
+          searchObj.$or = [
+               { artist: { $regex: searchObj.search, $options: "i" } },
+               { album: { $regex: searchObj.search, $options: "i" } },
+               { content: { $regex: searchObj.search, $options: "i" } }
+          ];
+          delete searchObj.search;
+     }
+
      if(searchObj.followingOnly !== undefined) {
           var followingOnly = searchObj.followingOnly == "true";
 
