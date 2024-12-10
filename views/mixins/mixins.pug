@@ -1,0 +1,54 @@
+mixin createPostForm(userLoggedIn)
+    .postFormContainer 
+        .userImageContainer 
+            img(src=userLoggedIn.profilePic, alt="Users Profile Picture")
+        .textareaContainer 
+            textarea#postScore(placeholder='Score 1-100')
+            textarea#postArtist(placeholder='Artist Name')
+            textarea#postAlbum(placeholder='Album Name')
+            textarea#postTextArea(placeholder="Whats happening")
+            .buttonsContainer 
+                button#submitPostButton(disabled="") Post
+
+mixin createReplyModal(userLoggedIn)
+    #replyModal.modal.fade(tabindex='-1', role='dialog', aria-labelledby='replyModalLabel', aria-hidden='true')
+        .modal-dialog(role='document')
+            .modal-content
+                .modal-header
+                    h5#replyModalLabel.modal-title Reply
+                .modal-body
+                    #originalPostContainer
+                    .postFormContainer 
+                        .userImageContainer 
+                            img(src=userLoggedIn.profilePic, alt="Users Profile Picture")
+                        .textareaContainer 
+                            textarea#replyTextArea(placeholder="Whats happening")
+                .modal-footer
+                    button.modalButton1.btn.btn-secondary(type='button', data-bs-dismiss='modal') Close
+                    button#submitReplyButton.btn.btn-primary(type='button') Save changes
+
+mixin createFollowButton(user, isFollowing)
+    - text = isFollowing ? "Following" : "Follow"
+    - buttonClass = isFollowing ? "followButton following" : "followButton"
+    button(class=buttonClass, data-user=user._id) #{text}
+
+mixin createTab(name, href, isSelected)
+    - className = isSelected ? "tab active" : "tab"
+    a(href=href, class=className)
+        span #{name}
+
+mixin createImageUploadModal()
+    #imageUploadModal.modal.fade(tabindex='-1', role='dialog', aria-labelledby='imageUploadModalLabel', aria-hidden='true')
+        .modal-dialog(role='document')
+            .modal-content
+                .modal-header
+                    h5#imageUploadModalLabel.modal-title Upload a new profile picture
+                .modal-body
+                    input#filePhoto(type="file", name="filePhoto")
+
+                    .imagePreviewContainer
+                        img#imagePreview
+                .modal-footer
+                    button.btn.btn-secondary(type='button', data-bs-dismiss='modal') Cancel
+                    button#imageUploadButton.btn.btn-primary(type='button') Save
+                

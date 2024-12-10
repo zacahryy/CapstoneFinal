@@ -1,0 +1,22 @@
+extends layouts/main-layout.pug
+
+block content
+  h1 Spotify Dashboard
+
+  if topTracks && topArtists && topDistinctAlbums
+    h2 Top Tracks
+    ul
+      each track in topTracks
+        li #{track.name} by #{track.artists[0].name}
+
+    h2 Top Artists
+    ul
+      each artist in topArtists
+        li #{artist.name}
+
+    h2 Top Albums and Singles
+    ul
+      each album in topDistinctAlbums
+        li #{album.name} by #{album.artists[0].name}
+  else
+    p Loading your Spotify data...

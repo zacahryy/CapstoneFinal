@@ -1,0 +1,11 @@
+extends layouts/main-layout.pug
+   
+block content
+    h1 Write a Review
+    +createPostForm(userLoggedIn)
+    .postsContainer
+
+    +createReplyModal(userLoggedIn)
+
+block scripts 
+    script(src="/js/home.js") 

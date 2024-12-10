@@ -1,0 +1,18 @@
+extends layouts/main-layout.pug
+   
+block content
+    if !profileUser
+        h1 User Not Found
+    else
+        script.
+            var profileUserId = `!{profileUser._id}`
+            var selectedTab = `!{selectedTab}`
+        
+        .tabsContainer
+            +createTab("Following", `/profile/${profileUser.username}/following`, selectedTab != "following")
+            +createTab("Followers", `/profile/${profileUser.username}/followers`, selectedTab == "followers")
+        
+        .resultsContainer
+
+block scripts 
+    script(src="/js/followPage.js") 
