@@ -616,13 +616,10 @@ nav a{
 }
 
 #chatName {
-    width: 100%;
     border: 1px solid transparent;
     padding: 0 5px;
-}
-
-#chatName:hover {
-    border: 1px solid #3d3d3d;
+    color: #33FF77;
+    font-weight: bold;
 }
 
 .chatContainer{
@@ -701,6 +698,53 @@ nav a{
 .chatImagesContainer .userCount {
     margin-left: -10px;
 }
+#chatNameTextbox {
+    background-color: #3d3d3d;
+    border: 1px solid #33FF77;
+    border-radius: 18px;
+    color: white;
+    padding: 8px 12px;
+    width: 100%;
+}
+
+.chatMessages .message {
+    padding-top: 15px;
+    padding-bottom: 15px;
+    list-style: none;
+    display: flex;
+    align-items: flex-end;
+    flex-shrink: 0;
+    /*-webkit-flex: 0;*/
+}
+
+.chatMessages .message .messageBody {
+    background-color: white;
+    padding: 15px 25px;
+    border-radius: 18px;
+    font-size: 15px;
+    color: black;
+}
+
+.chatMessage .message .messageContainer {
+    display: flex;
+    flex-direction: column;
+    max-width: 55%;
+}
+
+.chatMessages .message.mine {
+    flex-direction: row-reverse;
+}
+
+.chatMessages .message.mine .messageBody {
+    background-color: #33FF77;
+    color: black;
+}
+
+.senderName {
+    font-weight: bold;
+    padding-bottom: 10px;
+}
+
 
 
 

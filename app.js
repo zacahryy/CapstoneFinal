@@ -42,6 +42,7 @@ const messagesRoutes = require('./routes/messagesRoutes');
 const postApiRoutes = require('./routes/api/posts');
 const usersApiRoutes = require('./routes/api/users');
 const chatsApiRoutes = require('./routes/api/chats');
+const messagesApiRoutes = require('./routes/api/messages');
 
 app.use('/login', loginRoutes);
 app.use('/register', registerRoutes);
@@ -56,6 +57,7 @@ app.use('/messages', middleware.requireLogin, messagesRoutes);
 app.use('/api/posts', middleware.requireLogin, postApiRoutes);
 app.use('/api/users', usersApiRoutes);
 app.use('/api/chats', chatsApiRoutes);
+app.use('/api/messages', messagesApiRoutes);
 app.use('/api/spotifySetup', (req, res, next) => {
     req.spotifyApi = spotifyApi; // Attach Spotify API to request
     next();
